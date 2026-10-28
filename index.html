@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reveal Your Clue</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #000;
+  color: white;
+  font-family: Arial, sans-serif;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#start {
+  background: #a40000;
+  color: white;
+  border: 1px solid #ff4444;
+  padding: 22px 30px;
+  font-size: 22px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  border-radius: 5px;
+}
+#video {
+  display: none;
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: black;
+}
+</style>
+</head>
+<body>
+<button id="start">TAP TO REVEAL</button>
+
+<video id="video" playsinline preload="auto">
+  <source src="./Jumpscare.mp4" type="video/mp4">
+</video>
+
+<script>
+const button = document.getElementById("start");
+const video = document.getElementById("video");
+
+button.addEventListener("click", async () => {
+  button.style.display = "none";
+  video.style.display = "block";
+  video.muted = false;
+  video.currentTime = 0;
+
+  try {
+    if (video.requestFullscreen) {
+      video.requestFullscreen().catch(() => {});
+    }
+    await video.play();
+  } catch (error) {
+    button.style.display = "block";
+    video.style.display = "none";
+    button.textContent = "TAP TO PLAY";
+  }
+});
+
+video.addEventListener("ended", () => {
+  video.style.display = "none";
+  button.style.display = "block";
+  button.textContent = "TAP TO REVEAL";
+  video.currentTime = 0;
+});
+</script>
+</body>
+</html>
